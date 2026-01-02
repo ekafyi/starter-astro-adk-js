@@ -8,7 +8,7 @@ import { getUsernameFromCookie } from '@/lib/auth';
 const APP_NAME = "sample_astro_app";
 
 // Define runner outside the handler to persist state across requests in development
-// Note: In a serverless environment, this might be re-initialized per request, 
+// Note: In a serverless environment, this might be re-initialized per request,
 // which is why we persist session state to DB.
 const runner = new InMemoryRunner({ agent: rootAgent, appName: APP_NAME });
 

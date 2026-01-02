@@ -20,7 +20,10 @@
       "Bash(git push:*)",
       "Bash(git commit:*)",
       "Bash(bd reopen:*)",
-      "Bash(bd delete:*)"
+      "Bash(bd delete:*)",
+      "Bash(bd dep add:*)",
+      "Bash(bd sync:*)",
+      "Bash(curl:*)"
     ]
   }
 }
