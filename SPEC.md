@@ -162,17 +162,14 @@ Implement cookie-based login/logout with username validation.
 ### Epic 4: Server Actions Migration
 Move auth from API routes to Astro Server Actions with Zod validation.
 
-### Epic 5: Agent Foundation
-Integrate Google ADK, define LlmAgent with example tools, session management.
+### Epic 5: Agent Foundation & Implementation
+Integrate Google ADK, define LlmAgent with FunctionTools. Build demo agent (Countries) with capital/flag lookup and general knowledge tool.
 
-### Epic 6: Example Agent Implementation
-Build demo agent (Countries) with capital/flag lookup and general knowledge tool.
+### Epic 6: Agent API Route & Session Persistence
+Create `/api/agent` endpoint for agent execution with InMemoryRunner, session event storage to database.
 
 ### Epic 7: Frontend Pages & Components
 Home page (login/logout), agent page layout, AgentClient React component.
 
-### Epic 8: API Integration & Session Persistence
-`/api/agent` endpoint for agent execution, session event storage to database.
-
-### Epic 9: Testing & Documentation
+### Epic 8: Testing & Documentation
 Unit tests (agents, auth, API), update SPEC with customization examples.

@@ -19,7 +19,8 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nReplace all imports with @/ alias for cleaner code organization\n\n- Updated src/agents/agent.ts to use @/lib/countries\n- Updated src/actions/index.ts to use @/lib/auth  \n- Updated src/pages/api/agent.ts to use @/agents/agent and @/lib/auth\n- Updated src/pages/index.astro to use @/styles/global.css and @/lib/auth\n- Updated src/pages/agent.astro to use @/lib/auth, @/components/AgentClient, @/styles/global.css\n- TypeScript alias already configured in tsconfig.json\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
       "Bash(git commit:*)",
-      "Bash(bd reopen:*)"
+      "Bash(bd reopen:*)",
+      "Bash(bd delete:*)"
     ]
   }
 }
