@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import type { APIRoute } from 'astro';
 import { db, Sessions, eq } from 'astro:db';
 import { InMemoryRunner } from "@google/adk";
@@ -7,9 +8,7 @@ import { getUsernameFromCookie } from '@/lib/auth';
 
 const APP_NAME = "sample_astro_app";
 
-// Define runner outside the handler to persist state across requests in development
-// Note: In a serverless environment, this might be re-initialized per request,
-// which is why we persist session state to DB.
+// Define runner outside the handler to persist state across requests.
 const runner = new InMemoryRunner({ agent: rootAgent, appName: APP_NAME });
 
 function cleanEvents(events: any[]) {
@@ -35,14 +34,12 @@ function cleanEvents(events: any[]) {
 export const POST: APIRoute = async ({ request, cookies }) => {
 	try {
 		const text = await request.text();
-
 		if (!text) {
 			return new Response(JSON.stringify({ error: "Empty request body" }), { status: 400 });
 		}
 
 		const body = JSON.parse(text);
 		const { message } = body;
-
 		if (!message) {
 			return new Response(JSON.stringify({ error: "Message is required" }), { status: 400 });
 		}

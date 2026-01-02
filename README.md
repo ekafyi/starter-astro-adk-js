@@ -17,7 +17,13 @@ Clone of [this Next.js starter](https://github.com/ekafyi/starter-nextjs-adk-js/
 To check if data is being saved to the `Sessions` table, run the following command in your terminal:
 
 ```bash
-npm run db:shell -- --query "SELECT * FROM Sessions"
+npm run db:shell -- --query "SELECT * FROM Sessions where userId = 'testuser'"
+```
+
+Alternatively, you can use `sqlite`.
+
+```bash
+sqlite3 .astro/content.db "SELECT * FROM Sessions WHERE userId = 'testuser';"
 ```
 
 You should see a list of session records including `id`, `user_id`, `events`, and `created_at`.
