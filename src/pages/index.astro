@@ -1,4 +1,38 @@
 ---
+import '@/styles/global.css';
+import { getUsernameFromCookie } from '@/lib/auth';
+import { actions } from 'astro:actions';
+
+// Handle action results and redirects
+const loginResult = Astro.getActionResult(actions.login);
+const logoutResult = Astro.getActionResult(actions.logout);
+
+if (loginResult && !loginResult.error) {
+	return Astro.redirect("/agent");
+}
+
+if (logoutResult && !logoutResult.error) {
+	return Astro.redirect("/");
+}
+
+const username = await getUsernameFromCookie(Astro.cookies);
+const error = Astro.url.searchParams.get('error');
+
+let errorMessage = '';
+if (error === 'not_logged_in') errorMessage = 'Please log in first.';
+if (loginResult?.error) {
+	if (loginResult.error.message === 'username_required') {
+		errorMessage = 'Username is required.';
+	} else if (loginResult.error.message === 'user_not_found') {
+		errorMessage = 'User not found. Please check your username.';
+	} else {
+		errorMessage = 'An unknown error occurred.';
+	}
+} else {
+	if (error === 'username_required') errorMessage = 'Username is required.';
+	if (error === 'user_not_found') errorMessage = 'User not found. Please check your username.';
+	if (error === 'unknown') errorMessage = 'An unknown error occurred.';
+}
 
 ---
 
@@ -8,9 +42,62 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>ADK Demo Login</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+		<div class="max-w-md w-full p-8 bg-white rounded-xl shadow-lg border border-gray-100">
+			<h1 class="text-2xl font-bold mb-6 text-center">Countries Agent Demo</h1>
+			
+			{username ? (
+				<div class="text-center space-y-4">
+					<p class="text-green-600 font-medium">Logged in as {username}</p>
+					<a 
+						href="/agent" 
+						class="block w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+					>
+						Go to Agent
+					</a>
+					<form action={actions.logout} method="POST">
+						<button
+							type="submit"
+							class="w-full py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition-colors"
+						>
+							Logout
+						</button>
+					</form>
+				</div>
+			) : (
+				<form action={actions.login} method="POST" class="space-y-4">
+					<div>
+						<label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+						<input 
+							type="text" 
+							name="username" 
+							id="username" 
+							placeholder="Enter 'testuser'"
+							class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+							required
+						/>
+					</div>
+					
+					{errorMessage && (
+						<div class="p-3 bg-red-50 text-red-600 text-sm rounded-lg">
+							{errorMessage}
+						</div>
+					)}
+					
+					<button 
+						type="submit"
+						class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm"
+					>
+						Login
+					</button>
+					
+					<p class="text-xs text-center text-gray-500 mt-4">
+						Hint: Try <code>testuser</code>
+					</p>
+				</form>
+			)}
+		</div>
 	</body>
 </html>

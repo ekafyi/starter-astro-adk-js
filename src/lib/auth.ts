@@ -33,3 +33,26 @@ export function setUsernameCookie(cookies: AstroCookies, username: string) {
 		secure: import.meta.env.PROD
 	});
 }
+export async function getUser(username: string) {
+	try {
+		// In Astro DB, we access tables via the db object
+		const [user] = await db.select().from(Users).where(eq(Users.id, username));
+		return user || null;
+	} catch (error) {
+		console.error("Error fetching user:", error);
+		return null;
+	}
+}
+
+export function validateUsername(input: string): string {
+	const trimmed = input.trim();
+	if (!trimmed) {
+		throw new Error("Username is required");
+	}
+	// Basic sanitation/validation could go here if needed
+	return trimmed;
+}
+
+export function deleteUsernameCookie(cookies: AstroCookies) {
+	cookies.delete(COOKIE_NAME, { path: '/' });
+}

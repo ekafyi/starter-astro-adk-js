@@ -12,3 +12,12 @@ Clone of [this Next.js starter](https://github.com/ekafyi/starter-nextjs-adk-js/
     npm run db:shell -- --query "SELECT * FROM Users"
     npm run db:shell -- --query "SELECT * FROM Sessions"
     ```
+## Verifying Data Persistence
+
+To check if data is being saved to the `Sessions` table, run the following command in your terminal:
+
+```bash
+npm run db:shell -- --query "SELECT * FROM Sessions"
+```
+
+You should see a list of session records including `id`, `user_id`, `events`, and `created_at`.

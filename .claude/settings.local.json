@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Skill(beads:init)",
+      "WebSearch",
+      "Bash(cat:*)",
+      "Bash(bd init:*)",
+      "Skill(beads:create)",
+      "Bash(bd create:*)",
+      "Bash(bd comments starter-astro-adk-js-l6g add \"✅ Created src/actions/index.ts with login and logout actions using defineAction\\(\\) and Zod schemas\n✅ Updated src/pages/index.astro to use actions from astro:actions instead of API routes\n⏳ Next: Update AgentClient.tsx logout form, delete old API routes, test\")",
+      "Bash(bd update:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx tsc:*)",
+      "Bash(bd show:*)",
+      "Bash(bd close:*)",
+      "Bash(bd list:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nReplace all imports with @/ alias for cleaner code organization\n\n- Updated src/agents/agent.ts to use @/lib/countries\n- Updated src/actions/index.ts to use @/lib/auth  \n- Updated src/pages/api/agent.ts to use @/agents/agent and @/lib/auth\n- Updated src/pages/index.astro to use @/styles/global.css and @/lib/auth\n- Updated src/pages/agent.astro to use @/lib/auth, @/components/AgentClient, @/styles/global.css\n- TypeScript alias already configured in tsconfig.json\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
