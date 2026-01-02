@@ -58,7 +58,11 @@ export default function AgentClient({ username, initialSessionId }: AgentClientP
 
 	const handleLogout = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await fetch("/_actions/logout", { method: "POST" });
+		const formData = new FormData();
+		await fetch("/_actions/logout", {
+			method: "POST",
+			body: formData,
+		});
 		window.location.href = "/";
 	};
 
