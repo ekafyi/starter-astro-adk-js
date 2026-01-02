@@ -56,9 +56,15 @@ export default function AgentClient({ username, initialSessionId }: AgentClientP
 		}
 	};
 
+	const handleLogout = async (e: React.FormEvent) => {
+		e.preventDefault();
+		await fetch("/_actions/logout", { method: "POST" });
+		window.location.href = "/";
+	};
+
 	return (
 		<main className="p-8 space-y-4">
-			<form action="/_actions/logout" method="POST" className="flex justify-end">
+			<form onSubmit={handleLogout} className="flex justify-end">
 				<button
 					type="submit"
 					className="text-sm opacity-80 hover:text-destructive underline"
