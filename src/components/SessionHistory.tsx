@@ -65,22 +65,25 @@ export default function SessionHistory({ sessionId }: SessionHistoryProps) {
 	if (!sessionId) return null;
 
 	return (
-		<details className="bg-muted/50 shadow-sm" onToggle={(e) => {
-			if ((e.target as HTMLDetailsElement).open) {
-				fetchHistory();
-			}
-		}}>
+		<details className="bg-muted/50 shadow-sm">
 			<summary className="px-4 py-3 font-semibold cursor-pointer">Session History</summary>
-			<div className="px-4 pb-4">
-				{loading ? (
-					<p className="text-sm opacity-80">Loading...</p>
-				) : history ? (
+			<div className="px-4 pb-4 space-y-2">
+				{!history && !loading && (
+					<button
+						onClick={fetchHistory}
+						className="bg-primary text-primary-foreground py-2 px-4 rounded text-sm"
+					>
+						Load History
+					</button>
+				)}
+				{loading && <p className="text-sm opacity-80">Loading...</p>}
+				{history && (
 					<div className="space-y-1 text-sm font-mono">
 						{formatHistory().map((msg, i) => (
 							<p key={i}>{msg}</p>
 						))}
 					</div>
-				) : null}
+				)}
 			</div>
 		</details>
 	);
