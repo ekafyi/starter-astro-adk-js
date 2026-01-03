@@ -5,7 +5,6 @@ import AgentClient from "@/components/AgentClient";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getUsernameFromCookie } from "@/lib/auth";
 
-// Handle logout action result
 const logoutResult = Astro.getActionResult(actions.logout);
 if (logoutResult && !logoutResult.error) {
   return Astro.redirect("/");
