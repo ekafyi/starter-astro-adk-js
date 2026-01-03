@@ -58,7 +58,7 @@ export default function AgentClient({ username, initialSessionId }: AgentClientP
 
 	return (
 		<div className="space-y-4">
-			<AgentSessionMeta response={response} username={username} />
+			<AgentSessionMeta response={response} username={username} initialSessionId={initialSessionId} />
 
 			<form onSubmit={handleSubmit} className="flex gap-2">
 				<input
@@ -85,9 +85,10 @@ export default function AgentClient({ username, initialSessionId }: AgentClientP
 	);
 }
 
-function AgentSessionMeta({ response, username }: {
+function AgentSessionMeta({ response, username, initialSessionId }: {
 	response: AgentResponse | null;
 	username: string;
+	initialSessionId?: string | null;
 }) {
 	return (
 		<dl className="flex gap-6 text-sm font-mono">
@@ -98,7 +99,7 @@ function AgentSessionMeta({ response, username }: {
 			<div className="flex gap-2">
 				<dt className="opacity-80">Session ID:</dt>
 				<dd className="font-semibold">
-					{response?.sessionId || "Not set"}
+					{initialSessionId || response?.sessionId || "Not set"}
 				</dd>
 			</div>
 		</dl>
