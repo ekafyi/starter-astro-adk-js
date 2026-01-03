@@ -1,37 +1,46 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { db, Sessions, eq } from 'astro:db';
-import { getUsernameFromCookie } from '@/lib/auth';
-import { actions } from 'astro:actions';
-import AgentClient from '@/components/AgentClient';
+import { actions } from "astro:actions";
+import { db, eq, Sessions } from "astro:db";
+import AgentClient from "@/components/AgentClient";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getUsernameFromCookie } from "@/lib/auth";
+
+// Handle logout action result
+const logoutResult = Astro.getActionResult(actions.logout);
+if (logoutResult && !logoutResult.error) {
+  return Astro.redirect("/");
+}
 
 const username = await getUsernameFromCookie(Astro.cookies);
-
-// If not logged in, redirect to home
 if (!username) {
-	return Astro.redirect("/?error=not_logged_in");
+  return Astro.redirect("/?error=not_logged_in");
 }
 
 // Get the user's existing session to enable session resumption
 const [userSession] = await db
-	.select()
-	.from(Sessions)
-	.where(eq(Sessions.userId, username))
-	.limit(1);
+  .select()
+  .from(Sessions)
+  .where(eq(Sessions.userId, username))
+  .limit(1);
 
 const initialSessionId = userSession?.id || null;
 ---
 
 <BaseLayout title="ADK Agent Demo" bodyClass="min-h-screen">
-	<main class="max-w-4xl mx-auto p-8 space-y-4">
-		<form action={actions.logout} method="POST" class="flex justify-end">
-			<button type="submit" class="text-sm opacity-80 hover:text-destructive underline">
-				Logout
-			</button>
-		</form>
-
-		<h1 class="text-2xl font-semibold">Countries Agent</h1>
-
-		<AgentClient username={username} initialSessionId={initialSessionId} client:load />
-	</main>
+  <main class="max-w-4xl mx-auto p-8 space-y-4">
+    <form action={actions.logout} method="POST" class="flex justify-end">
+      <button
+        type="submit"
+        class="text-sm opacity-80 hover:text-destructive underline"
+      >
+        Logout
+      </button>
+    </form>
+    <h1 class="text-2xl font-semibold">Countries Agent</h1>
+    <AgentClient
+      username={username}
+      initialSessionId={initialSessionId}
+      client:load
+    />
+  </main>
 </BaseLayout>
