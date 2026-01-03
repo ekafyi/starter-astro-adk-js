@@ -1,11 +1,17 @@
-import { defineAction, ActionError } from 'astro:actions';
-import { z } from 'zod';
-import { validateUsername, getUser, setUsernameCookie, deleteUsernameCookie } from '@/lib/auth';
-import { db, Sessions, eq } from 'astro:db';
+import { ActionError, defineAction } from "astro:actions";
+import { db, eq, Sessions } from "astro:db";
+import { z } from "zod";
+import {
+	deleteUsernameCookie,
+	getUser,
+	getUsernameFromCookie,
+	setUsernameCookie,
+	validateUsername,
+} from "@/lib/auth";
 
 export const server = {
 	login: defineAction({
-		accept: 'form',
+		accept: "form",
 		input: z.object({
 			username: z.string(),
 		}),
@@ -16,8 +22,8 @@ export const server = {
 				username = validateUsername(usernameInput);
 			} catch (error) {
 				throw new ActionError({
-					code: 'BAD_REQUEST',
-					message: 'username_required',
+					code: "BAD_REQUEST",
+					message: "username_required",
 				});
 			}
 
@@ -25,8 +31,8 @@ export const server = {
 			const user = await getUser(username);
 			if (!user) {
 				throw new ActionError({
-					code: 'NOT_FOUND',
-					message: 'user_not_found',
+					code: "NOT_FOUND",
+					message: "user_not_found",
 				});
 			}
 
@@ -36,7 +42,7 @@ export const server = {
 	}),
 
 	logout: defineAction({
-		accept: 'form',
+		accept: "form",
 		handler: async (_, context) => {
 			deleteUsernameCookie(context.cookies);
 			return { success: true };
@@ -51,8 +57,8 @@ export const server = {
 			const userId = await getUsernameFromCookie(context.cookies);
 			if (!userId) {
 				throw new ActionError({
-					code: 'UNAUTHORIZED',
-					message: 'Authentication required',
+					code: "UNAUTHORIZED",
+					message: "Authentication required",
 				});
 			}
 
@@ -62,10 +68,14 @@ export const server = {
 				.where(eq(Sessions.id, sessionId))
 				.limit(1);
 
-			if (!session || session.userId !== userId) {
+			if (!session) {
+				return { events: [] };
+			}
+
+			if (session.userId !== userId) {
 				throw new ActionError({
-					code: 'NOT_FOUND',
-					message: 'Session not found',
+					code: "FORBIDDEN",
+					message: "Access denied",
 				});
 			}
 
