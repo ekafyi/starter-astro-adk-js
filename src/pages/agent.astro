@@ -42,6 +42,7 @@ const initialSessionId = userSession?.id || null;
       initialSessionId={initialSessionId}
       client:load
     />
+    <hr class="mt-4 text-muted" />
     <SessionHistory sessionId={initialSessionId} client:load />
   </main>
 </BaseLayout>

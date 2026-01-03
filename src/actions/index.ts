@@ -1,6 +1,7 @@
 import { defineAction, ActionError } from 'astro:actions';
 import { z } from 'zod';
 import { validateUsername, getUser, setUsernameCookie, deleteUsernameCookie } from '@/lib/auth';
+import { db, Sessions, eq } from 'astro:db';
 
 export const server = {
 	login: defineAction({
@@ -39,6 +40,37 @@ export const server = {
 		handler: async (_, context) => {
 			deleteUsernameCookie(context.cookies);
 			return { success: true };
+		},
+	}),
+
+	getSessionHistory: defineAction({
+		input: z.object({
+			sessionId: z.string(),
+		}),
+		handler: async ({ sessionId }, context) => {
+			const userId = await getUsernameFromCookie(context.cookies);
+			if (!userId) {
+				throw new ActionError({
+					code: 'UNAUTHORIZED',
+					message: 'Authentication required',
+				});
+			}
+
+			const [session] = await db
+				.select()
+				.from(Sessions)
+				.where(eq(Sessions.id, sessionId))
+				.limit(1);
+
+			if (!session || session.userId !== userId) {
+				throw new ActionError({
+					code: 'NOT_FOUND',
+					message: 'Session not found',
+				});
+			}
+
+			const events = JSON.parse(session.events);
+			return { events };
 		},
 	}),
 };

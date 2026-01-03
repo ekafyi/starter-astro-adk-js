@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { actions } from "astro:actions";
 
 interface AgentEvent {
 	content: {
@@ -25,9 +26,12 @@ export default function SessionHistory({ sessionId }: SessionHistoryProps) {
 
 		setLoading(true);
 		try {
-			const res = await fetch(`/api/session-history?sessionId=${sessionId}`);
-			const data = await res.json();
-			setHistory(data.events || []);
+			const { data, error } = await actions.getSessionHistory({ sessionId });
+			if (error) {
+				console.error(error);
+			} else {
+				setHistory(data.events || []);
+			}
 		} catch (err) {
 			console.error(err);
 		} finally {
