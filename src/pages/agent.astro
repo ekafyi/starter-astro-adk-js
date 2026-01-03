@@ -2,6 +2,7 @@
 import { actions } from "astro:actions";
 import { db, eq, Sessions } from "astro:db";
 import AgentClient from "@/components/AgentClient";
+import SessionHistory from "@/components/SessionHistory";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getUsernameFromCookie } from "@/lib/auth";
 
@@ -41,5 +42,6 @@ const initialSessionId = userSession?.id || null;
       initialSessionId={initialSessionId}
       client:load
     />
+    <SessionHistory sessionId={initialSessionId} client:load />
   </main>
 </BaseLayout>
