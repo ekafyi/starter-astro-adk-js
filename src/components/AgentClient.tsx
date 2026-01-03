@@ -56,28 +56,8 @@ export default function AgentClient({ username, initialSessionId }: AgentClientP
 		}
 	};
 
-	const handleLogout = async (e: React.FormEvent) => {
-		e.preventDefault();
-		const formData = new FormData();
-		await fetch("/_actions/logout", {
-			method: "POST",
-			body: formData,
-		});
-		window.location.href = "/";
-	};
-
 	return (
-		<main className="p-8 space-y-4">
-			<form onSubmit={handleLogout} className="flex justify-end">
-				<button
-					type="submit"
-					className="text-sm opacity-80 hover:text-destructive underline"
-				>
-					Logout
-				</button>
-			</form>
-
-			<h1 className="text-2xl font-semibold">Countries Agent</h1>
+		<div className="space-y-4">
 			<AgentSessionMeta response={response} username={username} />
 
 			<form onSubmit={handleSubmit} className="flex gap-2">
@@ -101,7 +81,7 @@ export default function AgentClient({ username, initialSessionId }: AgentClientP
 			</form>
 
 			{response && <AgentResponseUI response={response} />}
-		</main>
+		</div>
 	);
 }
 

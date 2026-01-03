@@ -1,8 +1,9 @@
 ---
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import { db, Sessions, eq } from 'astro:db';
 import { getUsernameFromCookie } from '@/lib/auth';
+import { actions } from 'astro:actions';
 import AgentClient from '@/components/AgentClient';
-import '@/styles/global.css';
 
 const username = await getUsernameFromCookie(Astro.cookies);
 
@@ -21,17 +22,16 @@ const [userSession] = await db
 const initialSessionId = userSession?.id || null;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>ADK Agent Demo</title>
-	</head>
-	<body class="bg-gray-50 min-h-screen text-gray-900 font-sans">
-		<main class="max-w-4xl mx-auto p-4 md:p-8">
-			<AgentClient username={username} initialSessionId={initialSessionId} client:load />
-		</main>
-	</body>
-</html>
+<BaseLayout title="ADK Agent Demo" bodyClass="min-h-screen">
+	<main class="max-w-4xl mx-auto p-8 space-y-4">
+		<form action={actions.logout} method="POST" class="flex justify-end">
+			<button type="submit" class="text-sm opacity-80 hover:text-destructive underline">
+				Logout
+			</button>
+		</form>
+
+		<h1 class="text-2xl font-semibold">Countries Agent</h1>
+
+		<AgentClient username={username} initialSessionId={initialSessionId} client:load />
+	</main>
+</BaseLayout>
